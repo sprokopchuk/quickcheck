@@ -32,14 +32,11 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     deleteMin(h) == empty
   }
 
-  property("sortedSequence1") = forAll { (h: H) =>
-    val heap = deleteMin(h)
-    if(isEmpty(heap)){
-      true
-    }
-    else {
-      ord.lt(findMin(h), findMin(heap))
-    }
+  property("sortedSequence1") = forAll { (a: Int, b: Int, c: Int) =>
+     val list = List(a, b, c).sorted
+     val heap1 = deleteMin(list.foldLeft(empty) { (h, e) => insert(e, h) })
+     val heap2 = list.tail.foldLeft(empty) { (h, e) => insert(e, h) }
+     heap1 == heap2
   }
 
 
